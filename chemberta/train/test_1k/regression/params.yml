@@ -1,0 +1,28 @@
+dataset:
+  eval_path: null
+  frac_train: 0.95
+  output_dir: test_1k
+  run_name: regression
+model:
+  attention_probs_dropout_prob: 0.1
+  hidden_dropout_prob: 0.1
+  hidden_size_per_attention_head: 64
+  intermediate_size: 3072
+  max_position_embeddings: 515
+  num_attention_heads: 2
+  num_hidden_layers: 2
+  type_vocab_size: 1
+  vocab_size: 600
+training:
+  cloud_directory: null
+  early_stopping_patience: 3
+  eval_steps: 50
+  learning_rate: 5.0e-05
+  load_best_model_at_end: true
+  logging_steps: 10
+  mlm_probability: 0.15
+  num_train_epochs: 100.0
+  overwrite_output_dir: true
+  per_device_train_batch_size: 8
+  save_steps: 500
+  save_total_limit: null

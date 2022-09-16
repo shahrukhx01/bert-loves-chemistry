@@ -77,6 +77,22 @@ def create_trainer(
         model = RobertaForSequenceClassification
 
         data_collator = multitask_data_collator
+    elif model_type == "regression_lazy":
+        dataset_class = LazyRegressionDataset
+        dataset = dataset_class(
+            tokenizer=tokenizer,
+            file_path=dataset_args.dataset_path,
+            block_size=dataset_args.tokenizer_max_length,
+        )
+
+        with open(dataset_args.normalization_path) as f:
+            normalization_values = json.load(f)
+
+        config.num_labels = dataset.num_labels
+        config.norm_mean = normalization_values["mean"]
+        config.norm_std = normalization_values["std"]
+        model = RobertaForRegression
+        data_collator = multitask_data_collator
 
     else:
         raise ValueError(model_type)

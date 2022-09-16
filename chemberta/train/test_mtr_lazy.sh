@@ -1,3 +1,5 @@
+#export PYTHONPATH="/Users/shahrukh/Desktop/Thesis_DD/bert-loves-chemistry/:$PYTHONPATH"
+
 python train_roberta.py \
     --model_type=regression_lazy \
     --dataset_path=../data/pubchem_1k_smiles.txt \
