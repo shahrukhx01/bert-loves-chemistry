@@ -6,9 +6,9 @@ from typing import List
 from torch.utils.data import random_split
 from transformers import (
     DataCollatorForLanguageModeling,
-    RobertaForMaskedLM,
-    RobertaForSequenceClassification,
-    RobertaTokenizerFast,
+    BertForMaskedLM,
+    BertForSequenceClassification,
+    BertTokenizerFast,
     Trainer,
     TrainerCallback,
 )
@@ -19,7 +19,7 @@ from chemberta.utils.raw_text_dataset import (
     RawTextDataset,
     RegressionTextDataset,
 )
-from chemberta.utils.roberta_regression import RobertaForRegression
+from chemberta.utils.roberta_regression import BertForRegression
 
 
 def create_trainer(
@@ -30,7 +30,7 @@ def create_trainer(
     callbacks: List,
     pretrained_model=None,
 ):
-    tokenizer = RobertaTokenizerFast.from_pretrained(
+    tokenizer = BertTokenizerFast.from_pretrained(
         dataset_args.tokenizer_path,
     )
 
@@ -45,7 +45,7 @@ def create_trainer(
         data_collator = DataCollatorForLanguageModeling(
             tokenizer=tokenizer, mlm=True, mlm_probability=dataset_args.mlm_probability
         )
-        model = RobertaForMaskedLM
+        model = BertForMaskedLM
 
     elif model_type == "regression":
         dataset_class = RegressionTextDataset
@@ -61,7 +61,7 @@ def create_trainer(
         config.num_labels = dataset.num_labels
         config.norm_mean = normalization_values["mean"]
         config.norm_std = normalization_values["std"]
-        model = RobertaForRegression
+        model = BertForRegression
 
         data_collator = multitask_data_collator
 
@@ -74,7 +74,7 @@ def create_trainer(
         )
 
         config.num_labels = dataset.num_labels
-        model = RobertaForSequenceClassification
+        model = BertForSequenceClassification
 
         data_collator = multitask_data_collator
     elif model_type == "regression_lazy":
@@ -91,7 +91,7 @@ def create_trainer(
         config.num_labels = dataset.num_labels
         config.norm_mean = normalization_values["mean"]
         config.norm_std = normalization_values["std"]
-        model = RobertaForRegression
+        model = BertForRegression
         data_collator = multitask_data_collator
 
     else:
@@ -122,7 +122,7 @@ def get_hyperopt_trainer(
     model_type, config, training_args, dataset_args, callbacks: List
 ):
 
-    tokenizer = RobertaTokenizerFast.from_pretrained(
+    tokenizer = BertTokenizerFast.from_pretrained(
         dataset_args.tokenizer_path, max_len=dataset_args.max_tokenizer_len
     )
 
@@ -137,7 +137,7 @@ def get_hyperopt_trainer(
         )
 
         def model_init_fn():
-            model = RobertaForMaskedLM(config=config)
+            model = BertForMaskedLM(config=config)
             return model
 
         model_init_callable = model_init_fn
@@ -157,7 +157,7 @@ def get_hyperopt_trainer(
         config.norm_std = normalization_values["std"]
 
         def model_init_fn():
-            model = RobertaForRegression(config=config)
+            model = BertForRegression(config=config)
             return model
 
         model_init_callable = model_init_fn
@@ -177,10 +177,10 @@ def get_hyperopt_trainer(
         config.num_labels = dataset.num_labels
         config.norm_mean = normalization_values["mean"]
         config.norm_std = normalization_values["std"]
-        model = RobertaForRegression(config=config)
+        model = BertForRegression(config=config)
 
         def model_init_fn():
-            model = RobertaForRegression(config=config)
+            model = BertForRegression(config=config)
             return model
 
         model_init_callable = model_init_fn

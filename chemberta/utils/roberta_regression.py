@@ -6,12 +6,12 @@ import torch
 import torch.nn as nn
 import torch.utils.checkpoint
 from torch.nn import CrossEntropyLoss, MSELoss
-from transformers import PreTrainedModel, RobertaModel
+from transformers import PreTrainedModel, BertModel
 from transformers.file_utils import ModelOutput
-from transformers.models.roberta.modeling_roberta import RobertaPreTrainedModel
+from transformers.models.bert.modeling_bert import BertPreTrainedModel
 
 
-class RobertaClassificationHead(nn.Module):
+class BertPreTrainedModel(nn.Module):
     """Head for sentence-level classification tasks."""
 
     def __init__(self, config):
@@ -59,15 +59,15 @@ class SequenceClassifierOutput(ModelOutput):
     attentions: Optional[Tuple[torch.FloatTensor]] = None
 
 
-class RobertaForSequenceClassification(RobertaPreTrainedModel):
+class BertForSequenceClassification(BertPreTrainedModel):
     _keys_to_ignore_on_load_missing = ["position_ids"]
 
     def __init__(self, config):
         super().__init__(config)
         self.num_labels = config.num_labels
 
-        self.roberta = RobertaModel(config, add_pooling_layer=False)
-        self.classifier = RobertaClassificationHead(config)
+        self.bert = BertModel(config, add_pooling_layer=False)
+        self.classifier = BertPreTrainedModel(config)
 
         self.init_weights()
 
@@ -94,7 +94,7 @@ class RobertaForSequenceClassification(RobertaPreTrainedModel):
             return_dict if return_dict is not None else self.config.use_return_dict
         )
 
-        outputs = self.roberta(
+        outputs = self.bert(
             input_ids,
             attention_mask=attention_mask,
             token_type_ids=token_type_ids,
@@ -135,7 +135,7 @@ class RobertaForSequenceClassification(RobertaPreTrainedModel):
         )
 
 
-class RobertaForRegression(RobertaPreTrainedModel):
+class BertForRegression(BertPreTrainedModel):
     _keys_to_ignore_on_load_missing = ["position_ids"]
 
     def __init__(self, config):
@@ -151,10 +151,11 @@ class RobertaForRegression(RobertaPreTrainedModel):
             ),
         )
 
-        self.roberta = RobertaModel(config, add_pooling_layer=False)
-        self.regression = RobertaRegressionHead(config)
+        self.bert = BertModel(config, add_pooling_layer=False)
+        self.regression = BertRegressionHead(config)
+        self.config = config
 
-        self.init_weights()
+        # self.init_weights()
 
     def forward(
         self,
@@ -179,7 +180,7 @@ class RobertaForRegression(RobertaPreTrainedModel):
             return_dict if return_dict is not None else self.config.use_return_dict
         )
 
-        outputs = self.roberta(
+        outputs = self.bert(
             input_ids,
             attention_mask=attention_mask,
             token_type_ids=token_type_ids,
@@ -222,11 +223,11 @@ class RobertaForRegression(RobertaPreTrainedModel):
         return (tensor * self.norm_std) + self.norm_mean
 
 
-class RobertaRegressionHead(nn.Module):
+class BertRegressionHead(nn.Module):
     """Head for multitask regression models."""
 
     def __init__(self, config):
-        super(RobertaRegressionHead, self).__init__()
+        super(BertRegressionHead, self).__init__()
         self.dense = nn.Linear(config.hidden_size, config.hidden_size)
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
         self.out_proj = nn.Linear(config.hidden_size, config.num_labels)

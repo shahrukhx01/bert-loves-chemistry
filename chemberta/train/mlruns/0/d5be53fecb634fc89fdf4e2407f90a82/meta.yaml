@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/shahrukh/Desktop/Thesis_DD/bert-loves-chemistry/chemberta/train/mlruns/0/d5be53fecb634fc89fdf4e2407f90a82/artifacts
+end_time: 1663418577093
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: d5be53fecb634fc89fdf4e2407f90a82
+run_uuid: d5be53fecb634fc89fdf4e2407f90a82
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1663418556119
+status: 3
+tags: []
+user_id: shahrukh

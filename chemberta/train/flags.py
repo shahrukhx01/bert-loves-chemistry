@@ -16,25 +16,25 @@ def roberta_model_configuration_flags():
     )
     flags.DEFINE_integer(
         name="hidden_size_per_attention_head",
-        default=64,
+        default=512,
         help="Multiply with `num_attention_heads` to get the dimensionality of the encoder layers and the pooler layer.",
         module_name="model",
     )
     flags.DEFINE_integer(
         name="intermediate_size",
-        default=3072,
+        default=2048,
         help="Dimensionality of the “intermediate” (often named feed-forward) layer in the Transformer encoder.",
         module_name="model",
     )
     flags.DEFINE_integer(
         name="max_position_embeddings",
-        default=515,
+        default=768,
         help="The maximum sequence length that this model might ever be used with. Typically set this to something large just in case (e.g., 512 or 1024 or 2048)",
         module_name="model",
     )
     flags.DEFINE_integer(
         name="num_attention_heads",
-        default=6,
+        default=8,
         help="Number of attention heads for each attention layer in the Transformer encoder.",
         module_name="model",
     )
@@ -46,13 +46,13 @@ def roberta_model_configuration_flags():
     )
     flags.DEFINE_integer(
         name="type_vocab_size",
-        default=1,
+        default=5,
         help="The vocabulary size of the token_type_ids passed when calling BertModel or TFBertModel",
         module_name="model",
     )
     flags.DEFINE_integer(
         name="vocab_size",
-        default=600,
+        default=4096,
         help="Vocabulary size of the BERT model. Defines the number of different tokens that can be represented by the inputs_ids passed when calling BertModel or TFBertModel",
         module_name="model",
     )
@@ -61,7 +61,8 @@ def roberta_model_configuration_flags():
 def tokenizer_flags():
     flags.DEFINE_string(
         name="tokenizer_path",
-        default="seyonec/SMILES_tokenized_PubChem_shard00_160k",
+        # default="seyonec/SMILES_tokenized_PubChem_shard00_160k",
+        default="shahrukhx01/smole-bert",
         help="Path to vocab file",
         module_name="tokenizer",
     )
