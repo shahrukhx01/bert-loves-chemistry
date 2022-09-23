@@ -26,7 +26,7 @@ import s3fs
 import torch
 import yaml
 from absl import app, flags
-from transformers import RobertaConfig, TrainingArguments
+from transformers import BertConfig, TrainingArguments
 from transformers.trainer_callback import EarlyStoppingCallback
 
 from chemberta.train.flags import (
@@ -65,18 +65,29 @@ def main(argv):
     if not os.path.isdir(run_dir):
         os.makedirs(run_dir)
 
-    model_config = RobertaConfig(
+    model_config = BertConfig(
         vocab_size=FLAGS.vocab_size,
         max_position_embeddings=FLAGS.max_position_embeddings,
         num_attention_heads=FLAGS.num_attention_heads,
         num_hidden_layers=FLAGS.num_hidden_layers,
-        hidden_size=FLAGS.hidden_size_per_attention_head * FLAGS.num_attention_heads,
-        intermediate_size=4 * FLAGS.intermediate_size,
+        #hidden_size=FLAGS.hidden_size_per_attention_head * FLAGS.num_attention_heads,
+        hidden_size=FLAGS.hidden_size_per_attention_head,
+        #intermediate_size=4 * FLAGS.intermediate_size,
+        intermediate_size=FLAGS.intermediate_size,
         type_vocab_size=FLAGS.type_vocab_size,
         hidden_dropout_prob=FLAGS.hidden_dropout_prob,
         attention_probs_dropout_prob=FLAGS.attention_probs_dropout_prob,
         is_gpu=torch.cuda.is_available(),
     )
+    print( f"vocab_size={FLAGS.vocab_size}\
+        max_position_embeddings={FLAGS.max_position_embeddings}\
+        num_attention_heads={FLAGS.num_attention_heads}\
+        num_hidden_layers={FLAGS.num_hidden_layers}\
+        hidden_size={FLAGS.hidden_size_per_attention_head}\
+        intermediate_size={FLAGS.intermediate_size}\
+        type_vocab_size={FLAGS.type_vocab_size}\
+        hidden_dropout_prob={FLAGS.hidden_dropout_prob}\
+        attention_probs_dropout_prob={FLAGS.attention_probs_dropout_prob}")
 
     dataset_args = DatasetArguments(
         FLAGS.dataset_path,

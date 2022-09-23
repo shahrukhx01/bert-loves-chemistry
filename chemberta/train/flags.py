@@ -111,7 +111,7 @@ def train_flags():
     )
     flags.DEFINE_integer(
         name="eval_steps",
-        default=50,
+        default=100_000,
         help="Number of update steps between two evaluations if evaluation_strategy='steps'. Will default to the same value as logging_steps if not set.",
         module_name="training",
     )

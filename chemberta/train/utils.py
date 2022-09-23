@@ -91,6 +91,8 @@ def create_trainer(
         config.num_labels = dataset.num_labels
         config.norm_mean = normalization_values["mean"]
         config.norm_std = normalization_values["std"]
+        model = BertForRegression(config=config)
+        print("MODEL PARAMETERS--------", sum(p.numel() for p in model.parameters() if p.requires_grad))
         model = BertForRegression
         data_collator = multitask_data_collator
 
@@ -178,7 +180,7 @@ def get_hyperopt_trainer(
         config.norm_mean = normalization_values["mean"]
         config.norm_std = normalization_values["std"]
         model = BertForRegression(config=config)
-
+        
         def model_init_fn():
             model = BertForRegression(config=config)
             return model

@@ -1,0 +1,6 @@
+--2022-09-18 00:39:42--  https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/13612760/guacamol_v1_train.smiles?X-Amz-Algorithm=AWS4-HMAC-SHA256
+Resolving s3-eu-west-1.amazonaws.com (s3-eu-west-1.amazonaws.com)... 52.218.101.251
+Connecting to s3-eu-west-1.amazonaws.com (s3-eu-west-1.amazonaws.com)|52.218.101.251|:443... connected.
+HTTP request sent, awaiting response... 400 Bad Request
+2022-09-18 00:39:42 ERROR 400: Bad Request.
+
